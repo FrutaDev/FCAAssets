@@ -1,0 +1,12 @@
+{% load static %}
+
+{% block css_file %}
+<link rel="stylesheet" href="{% static 'header.css' %}">
+{% endblock %}
+
+<header>
+    <nav class="nav-header">
+        <a href="{% url 'landing-page' %}">Home</a>   
+        <a href="{% url 'index' %}">Challenges</a>   
+    </nav>
+</header>
