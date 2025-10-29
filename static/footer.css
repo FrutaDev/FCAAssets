@@ -1,0 +1,13 @@
+.footer {
+    text-align: center;
+    padding: 1rem;
+    background-color: #f8f8f8;
+    border-top: 1px solid #e7e7e7;
+    margin: 0;
+}
+
+#created-by {
+    font-size: 0.9rem;
+    color: #666;
+    opacity: 0.4;
+}

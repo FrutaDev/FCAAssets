@@ -1,12 +1,18 @@
+html {
+    background-color: #f4f4f4;
+}
+
+body {
+    min-height: 50vh;
+}
+
 .chart-container {
     display: flex;
-    margin: auto;
+    margin: auto auto 2rem auto;
     width: 380px;
     height: 380px;
-    background: white;
     padding: 20px;
     border-radius: 10px;
-    padding-bottom: 4rem;
 }
 
 .chart-header {

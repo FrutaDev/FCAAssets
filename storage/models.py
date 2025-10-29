@@ -1,5 +1,5 @@
 from django.db import models
-from datetime import timedelta
+from datetime import timedelta, date
 
 # Create your models here.
 
@@ -18,9 +18,11 @@ class Storage(models.Model):
     name = models.ForeignKey("Types", on_delete=models.CASCADE, related_name="type")
     brand = models.ForeignKey("Brand", on_delete=models.CASCADE, null=True, related_name="brand")
     lab_name = models.ForeignKey('Labs', related_name='labs', on_delete=models.CASCADE)
+    necessary_maintenance = models.BooleanField(default=False)
 
     def __str__(self):
         return self.name.type_name
+
 
 
 
@@ -46,17 +48,17 @@ class Suplier(models.Model):
 
 #Modelo de mantenimientos
 class Maintenance(models.Model):
-    maintenance_image = models.ImageField(upload_to="storage/images",null=True, blank=True)
-    maintenance_date = models.DateField()
-    upcoming_maintenance = models.DateField(blank=True, null=True)
-    maintenance_neccesary = models.BooleanField(default=False)
     machinary_maintenance = models.ForeignKey("Storage", on_delete=models.CASCADE)
+    maintenance_date = models.DateField()
     maintenance_provider = models.ForeignKey("Suplier", on_delete=models.SET_NULL, null=True)
+    maintenance_image = models.ImageField(upload_to="storage/images",null=True, blank=True)
+    maintenance_file = models.FileField(upload_to="storage/files", null=True, blank=True)
+    upcoming_maintenance = models.DateField(blank=True, null=True)
 
     def __str__(self):
         return f"{self.machinary_maintenance} último mantenimiento {self.maintenance_date}"
-    
+
     def save(self,*args, **kwargs):
-        if not self.upcoming_maintenance and self.maintenance_date:
+        if not self.upcoming_maintenance:
             self.upcoming_maintenance = self.maintenance_date + timedelta(days=365)
         super().save(*args, **kwargs)

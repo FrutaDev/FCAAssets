@@ -1,17 +1,33 @@
 from django.shortcuts import render
 from django.views.generic.base import View
-from .models import Maintenance
+from .models import Maintenance, Storage
+from django.db.models import OuterRef, Subquery
+from datetime import date, timedelta
 
-# Create your views here.
 
 class Index(View):
     def get(self, request):
-        all_maitenances = Maintenance.objects.all()
-        requires = Maintenance.objects.filter(maintenance_neccesary=True).count()
-        not_requires = Maintenance.objects.filter(maintenance_neccesary=False).count()
+        latest_maintenance_subquery = (Maintenance.objects.filter(id=OuterRef('pk')).order_by('-maintenance_date').values('maintenance_date')[:1])
+        latest_maintenance_providers = (Maintenance.objects.filter(id=OuterRef('pk')).order_by('-maintenance_date').values('maintenance_provider')[:1])
+        upcoming_maintenance_subquery = (Maintenance.objects.filter(id=OuterRef('pk')).order_by('-maintenance_date').values('upcoming_maintenance')[:1])
+
+        storages = Storage.objects.annotate(
+            latest_maintenance_date=Subquery(latest_maintenance_subquery),
+            latest_maintenance_suppliers=Subquery(latest_maintenance_providers),
+            latest_maintenance_upcoming=Subquery(upcoming_maintenance_subquery)
+        )
+        for storage in storages:
+            if storage.latest_maintenance_upcoming and storage.latest_maintenance_upcoming <= date.today() - timedelta(days=30):
+                storage.necessary_maintenance = True
+            else:
+                storage.necessary_maintenance = False
+            storage.save(update_fields=['necessary_maintenance'])
+
+        requires = Storage.objects.filter(necessary_maintenance=True).count()
+        not_requires = Storage.objects.filter(necessary_maintenance=False).count()
 
         return render(request, "storage/index.html", {
-            "maintenances": all_maitenances,
+            "maintenances": storages,
             "requires": requires,
             "not_requires": not_requires
         })

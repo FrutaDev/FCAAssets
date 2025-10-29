@@ -29,25 +29,25 @@
     {% for maintenance in maintenances %}
         <tr>
             <td>
-                {{ maintenance.machinary_maintenance.serial }}
+                {{ maintenance.serial }}
             </td>
             <td>
-                {{ maintenance.machinary_maintenance.name.type_name }}
+                {{ maintenance.type.type_name }}
             </td>
             <td>
-                {{ maintenance.machinary_maintenance.brand.brand_name }}
+                {{ maintenance.brand.brand_name }}
             </td>
             <td>
-                {{ maintenance.machinary_maintenance.lab_name.lab_name }}
+                {{ maintenance.lab_name }}
             </td>
             <td>
-                {{ maintenance.maintenance_date }}
+                {{ maintenance.latest_maintenance_date }}
             </td>
             <td>
-                {{ maintenance.maintenance_provider.name_provider }}
+                {{ maintenance.latest_maintenance_suppliers }}
             </td>
             <td>
-                {{ maintenance.upcoming_maintenance }}
+                {{ maintenance.latest_maintenance_upcoming }}
             </td>
             <td class="{% if maintenance.maintenance_neccesary %} require_maintenance {% else %} not_require_maintenance {% endif %}">
                 {% if maintenance.maintenance_neccesary %}
