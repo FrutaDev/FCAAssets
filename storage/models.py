@@ -12,36 +12,51 @@ class Labs(models.Model):
 
 #Modelo de inventario
 class Storage(models.Model):
-    serial = models.CharField(max_length=50, default="")
-    name = models.CharField(max_length=100)
-    image = models.ImageField(upload_to="storage/images",default="", null=True, blank=True)
-    lab_name = models.ForeignKey('Labs', related_name='labs', on_delete=models.CASCADE)
+    serial = models.CharField(max_length=50, null=True, blank=True)
+    image = models.ImageField(upload_to="storage/images", null=True, blank=True)
     acquisition_date = models.DateField(null=True, blank=True)
-
-
+    name = models.ForeignKey("Types", on_delete=models.CASCADE, related_name="type")
+    brand = models.ForeignKey("Brand", on_delete=models.CASCADE, null=True, related_name="brand")
+    lab_name = models.ForeignKey('Labs', related_name='labs', on_delete=models.CASCADE)
 
     def __str__(self):
-        return self.name
+        return self.name.type_name
+
+
+
+class Types(models.Model):
+    type_name = models.CharField(max_length=100, null=True)
+
+    def __str__(self):
+        return self.type_name
+
+
+class Brand(models.Model):
+    brand_name = models.CharField(max_length=100, null=True)
+
+    def __str__(self):
+        return self.brand_name
 
 #Proveedores de mantenimiento
 class Suplier(models.Model):
-    name_provider = models.CharField(max_length=100)
+    name_provider = models.CharField(max_length=100, default="")
 
     def __str__(self):
         return self.name_provider
 
 #Modelo de mantenimientos
 class Maintenance(models.Model):
-    machinary_maintenance = models.ForeignKey(Storage, on_delete=models.CASCADE)
-    maintenance_provider = models.ForeignKey(Suplier, on_delete=models.SET_NULL, null=True)
-    maintenance_image = models.ImageField(upload_to="storage/images",default="", null=True, blank=True)
+    maintenance_image = models.ImageField(upload_to="storage/images",null=True, blank=True)
     maintenance_date = models.DateField()
-    upcoming_maitenance = models.DateField(blank=True, null=True)
+    upcoming_maintenance = models.DateField(blank=True, null=True)
+    maintenance_neccesary = models.BooleanField(default=False)
+    machinary_maintenance = models.ForeignKey("Storage", on_delete=models.CASCADE)
+    maintenance_provider = models.ForeignKey("Suplier", on_delete=models.SET_NULL, null=True)
 
     def __str__(self):
         return f"{self.machinary_maintenance} último mantenimiento {self.maintenance_date}"
     
     def save(self,*args, **kwargs):
-        if not self.upcoming_maitenance:
-            self.upcoming_maitenance = self.maintenance_date + timedelta(days=365)
+        if not self.upcoming_maintenance and self.maintenance_date:
+            self.upcoming_maintenance = self.maintenance_date + timedelta(days=365)
         super().save(*args, **kwargs)

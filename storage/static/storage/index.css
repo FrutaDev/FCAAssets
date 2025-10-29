@@ -1,0 +1,15 @@
+.chart-container {
+    display: flex;
+    margin: auto;
+    width: 380px;
+    height: 380px;
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    padding-bottom: 4rem;
+}
+
+.chart-header {
+    display: flex;
+    justify-content: center;
+}

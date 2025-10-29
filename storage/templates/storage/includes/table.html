@@ -13,9 +13,6 @@
             Laboratorio
         </th>
         <th>
-            Laboratorio
-        </th>
-        <th>
             Ultimo mantenimiento
         </th>
         <th>
@@ -29,11 +26,37 @@
         </th>
     </tr>
 
-    {% comment %} {% for maintenance in maintenances %}
+    {% for maintenance in maintenances %}
         <tr>
             <td>
-                {{ maintenance. }}
+                {{ maintenance.machinary_maintenance.serial }}
+            </td>
+            <td>
+                {{ maintenance.machinary_maintenance.name.type_name }}
+            </td>
+            <td>
+                {{ maintenance.machinary_maintenance.brand.brand_name }}
+            </td>
+            <td>
+                {{ maintenance.machinary_maintenance.lab_name.lab_name }}
+            </td>
+            <td>
+                {{ maintenance.maintenance_date }}
+            </td>
+            <td>
+                {{ maintenance.maintenance_provider.name_provider }}
+            </td>
+            <td>
+                {{ maintenance.upcoming_maintenance }}
+            </td>
+            <td class="{% if maintenance.maintenance_neccesary %} require_maintenance {% else %} not_require_maintenance {% endif %}">
+                {% if maintenance.maintenance_neccesary %}
+                    <span>Mantenimiento necesario</span>
+                {% else %}
+                    <span>Mantenimiento realizado</span>
+                {% endif %}
             </td>
         </tr>
-    {% endfor %} {% endcomment %}
+    {% endfor %}
+    
 </table>

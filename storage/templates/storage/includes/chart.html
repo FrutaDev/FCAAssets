@@ -1,0 +1,35 @@
+
+<div class="chart-header">
+    <h2>Estado de mantenimiento de maquinaria</h2>
+</div>
+
+<div class="chart-container">
+        <canvas id="maintenanceChart"></canvas>
+</div>
+
+<script>
+    const ctx = document.getElementById('maintenanceChart').getContext('2d');
+    const maintenanceChart = new Chart(ctx, {
+        type: 'doughnut',
+        data: {
+            labels: ['Requiere mantenimiento', 'No requiere mantenimiento'],
+            datasets: [{
+                data: [{{ requires }}, {{ not_requires }}],
+                backgroundColor: ['#e74c3c', '#2ecc71'],
+                borderColor: ['#fff', '#fff'],
+                borderWidth: 2,
+            }]
+        },
+        options: {
+            plugins: {
+                legend: {
+                    position: 'bottom',
+                    labels: {
+                        font: { size: 14 }
+                    }
+                }
+            },
+            cutout: '65%',
+        }
+    });
+</script>
