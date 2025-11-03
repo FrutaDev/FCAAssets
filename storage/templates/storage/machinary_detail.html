@@ -1,0 +1,76 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block css_file %}
+    <link rel="stylesheet" href="{% static 'storage/machinary_detail.css' %}">
+{%endblock%}
+
+{% block title %}
+    Mantenimientos de maquinaria
+{% endblock %}
+
+{% block content %}
+    <h1>Detalles de maquinaria</h1>
+    <main class="machinary-detail">
+        <div class="machinary-detail-image">
+            {{ machinary.image }}
+        </div>
+        <div class="machinary-detail-info">
+            <h3>
+            {{ machinary.name }} - {{ machinary.brand }}
+            </h3>
+            <p class="{% if machinary.necessary_maintenance %} necessary-maintenance {% else %} unnecessary-maintenance {% endif %}">
+                {% if machinary.necessary_maintenance %}
+                    Requiere mantenimiento
+                {% else %}
+                    Mantenimiento al día
+                {% endif %}
+            </p>
+            <div class="more-machinary-detail">
+                <p>
+                    Fecha de adquisicion: <br>
+                    {{ machinary.acquisition_date }}
+                </p>
+                <p>
+                    Ubicación: <br>
+                    {{ machinary.lab_name }}
+                </p>
+            </div>
+        </div>
+    </main>
+
+    <section>
+        <table>
+            <tr>
+                <th>
+                    Serial
+                </th>
+                <th>
+                    Tipo de Maquinaria
+                </th>
+                <th>
+                    Fecha de Mantenimiento
+                </th>
+                <th>
+                    Proveedor de Mantenimiento
+                </th>
+            </tr>
+            {% for maintenance in maintenances %}
+            <tr>
+                <td>
+                    {{maintenance.machinary_maintenance.serial}}
+                </td>
+                <td>
+                    {{maintenance.machinary_maintenance.name}}
+                </td>
+                <td>
+                    {{maintenance.maintenance_date}}
+                </td>
+                <td>    
+                    {{maintenance.maintenance_provider}}
+                </td>
+            </tr>
+            {% endfor %}
+        </table>
+    </section>
+{% endblock %}

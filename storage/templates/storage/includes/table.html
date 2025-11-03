@@ -27,7 +27,7 @@
     </tr>
 
     {% for maintenance in maintenances %}
-        <tr>
+        <tr onclick="window.location='{% url 'machinary-detail' maintenance.serial %}'">
             <td>
                 {{ maintenance.serial }}
             </td>
@@ -51,12 +51,12 @@
             </td>
             <td class="{% if maintenance.maintenance_neccesary %} require_maintenance {% else %} not_require_maintenance {% endif %}">
                 {% if maintenance.maintenance_neccesary %}
-                    <span>Mantenimiento necesario</span>
+                <span>Mantenimiento necesario</span>
                 {% else %}
-                    <span>Mantenimiento realizado</span>
+                <span>Mantenimiento realizado</span>
                 {% endif %}
             </td>
         </tr>
-    {% endfor %}
-    
+        {% endfor %}
+        
 </table>

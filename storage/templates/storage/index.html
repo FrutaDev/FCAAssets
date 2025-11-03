@@ -6,17 +6,16 @@
         <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 {%endblock%}
 
-{% block css_file%}
+{% block css_file %}
     <link rel="stylesheet" href="{% static 'storage/index.css' %}">
     <link rel="stylesheet" href="{% static 'storage/table.css' %}">
 {% endblock %}
 
 {% block  title_block %}
-    
+    Maquinaria Disponible
 {% endblock %}
 
 {% block content %}
-    
         {% include '../storage/includes/chart.html' %}
         {% include '../storage/includes/table.html' %}
     {% include 'footer.html'%}

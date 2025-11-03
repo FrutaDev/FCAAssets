@@ -16,6 +16,7 @@ class Index(View):
             latest_maintenance_suppliers=Subquery(latest_maintenance_providers),
             latest_maintenance_upcoming=Subquery(upcoming_maintenance_subquery)
         )
+
         for storage in storages:
             if storage.latest_maintenance_upcoming and storage.latest_maintenance_upcoming <= date.today() - timedelta(days=30):
                 storage.necessary_maintenance = True
@@ -30,4 +31,13 @@ class Index(View):
             "maintenances": storages,
             "requires": requires,
             "not_requires": not_requires
+        })
+    
+class MachinaryDetail(View):
+    def get(self, request, serial):
+        machinary_detail = Storage.objects.get(serial=serial)
+        maintenances_done = Maintenance.objects.filter(machinary_maintenance__serial=serial).order_by('-maintenance_date')
+        return render(request, "storage/machinary_detail.html", {
+            "maintenances": maintenances_done,
+            "machinary": machinary_detail
         })
