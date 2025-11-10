@@ -32,7 +32,7 @@
                 {{ maintenance.serial }}
             </td>
             <td>
-                {{ maintenance.type.type_name }}
+                {{ maintenance.name.type_name }}
             </td>
             <td>
                 {{ maintenance.brand.brand_name }}
@@ -46,11 +46,11 @@
             <td>
                 {{ maintenance.latest_maintenance_suppliers }}
             </td>
-            <td>
+            <td>    
                 {{ maintenance.latest_maintenance_upcoming }}
             </td>
-            <td class="{% if maintenance.maintenance_neccesary %} require_maintenance {% else %} not_require_maintenance {% endif %}">
-                {% if maintenance.maintenance_neccesary %}
+            <td class="{% if maintenance.necessary_maintenance %} require_maintenance {% else %} not_require_maintenance {% endif %}">
+                {% if maintenance.necessary_maintenance %}
                 <span>Mantenimiento necesario</span>
                 {% else %}
                 <span>Mantenimiento realizado</span>

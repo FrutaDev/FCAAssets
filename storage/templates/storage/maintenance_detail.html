@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block css_file %}
+    <link rel="stylesheet" href="{% static 'storage/maintenance_detail.css' %}">
+{% endblock %}
+
+{% block title_page %}
+    Detalles de mantenimiento
+{% endblock %}
+
+{% block content %}
+<main class="maintenance-detail">
+    <h1 class="maintenance-title">Detalles del mantenimiento</h1>
+
+    <section class="maintenance-card">
+        <div class="maintenance-image">
+            <img src="{% if maintenance_detail.maintenance_image %} {{ maintenance_detail.maintenance_image.url }} {% else %} "" {% endif %}" alt="Imagen de maquinaria">
+        </div>
+        <div class="maintenance-info">
+            <p>
+                <span class="label">Proveedor del mantenimiento:</span> 
+                {{ maintenance_detail.maintenance_provider }}
+            </p>
+            <p>
+                <span class="label">Fecha del mantenimiento:</span> 
+                {{ maintenance_detail.maintenance_date }}
+            </p>
+            <p>
+                <span class="label">Próximo mantenimiento:</span> 
+                {{ maintenance_detail.upcoming_maintenance }}
+            </p>
+            <p>
+                <span class="label">Serial de maquinaria:</span> 
+                {{ maintenance_detail.machinary_maintenance.serial }}
+            </p>
+            <p>
+                <span class="label">Tipo y marca de maquinaria:</span> 
+                {{ maintenance_detail.machinary_maintenance.name }} - {{ maintenance_detail.machinary_maintenance.brand }}
+            </p>
+            {% if maintenance_detail.maintenance_file %}
+            <a class="download-link" href="{% url 'maintenance-file-download' maintenance_detail.id %}">Descargar archivo de mantenimiento</a>
+            {% else %}
+            <p class="no-file">No hay archivo de mantenimiento disponible.</p>
+            {% endif %}
+        </div>
+    </section>
+</main>
+{% endblock %}

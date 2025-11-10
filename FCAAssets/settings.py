@@ -125,11 +125,9 @@ STATIC_URL = 'static/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 STATICFILES_DIRS = [
-    BASE_DIR / "static",
+    BASE_DIR / "static"
 ]
 
 MEDIA_URL = '/management-assets/'
 
-MEDIA_ROOT = [
-    BASE_DIR / "uploads"
-]
+MEDIA_ROOT = BASE_DIR / "uploads"

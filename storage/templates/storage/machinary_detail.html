@@ -3,17 +3,17 @@
 
 {% block css_file %}
     <link rel="stylesheet" href="{% static 'storage/machinary_detail.css' %}">
-{%endblock%}
+{% endblock %}
 
-{% block title %}
-    Mantenimientos de maquinaria
+{% block title_page %}
+    Detalles de maquinaria
 {% endblock %}
 
 {% block content %}
     <h1>Detalles de maquinaria</h1>
     <main class="machinary-detail">
         <div class="machinary-detail-image">
-            {{ machinary.image }}
+            <img src="{% if machinary.image %} {{machinary.image.url}} {% else %} "" {% endif %}" alt="Imagen de maquinaria">
         </div>
         <div class="machinary-detail-info">
             <h3>
@@ -56,7 +56,7 @@
                 </th>
             </tr>
             {% for maintenance in maintenances %}
-            <tr>
+            <tr onclick="window.location='{% url 'maintenance-detail' maintenance.id %}'">
                 <td>
                     {{maintenance.machinary_maintenance.serial}}
                 </td>

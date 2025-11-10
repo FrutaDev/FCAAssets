@@ -3,12 +3,14 @@ from django.views.generic.base import View
 from .models import Maintenance, Storage
 from django.db.models import OuterRef, Subquery
 from datetime import date, timedelta
+from django.http import FileResponse, Http404
+import os
 
 
 class Index(View):
     def get(self, request):
         latest_maintenance_subquery = (Maintenance.objects.filter(id=OuterRef('pk')).order_by('-maintenance_date').values('maintenance_date')[:1])
-        latest_maintenance_providers = (Maintenance.objects.filter(id=OuterRef('pk')).order_by('-maintenance_date').values('maintenance_provider')[:1])
+        latest_maintenance_providers = (Maintenance.objects.filter(id=OuterRef('pk')).order_by('-maintenance_date').values('maintenance_provider__name_provider')[:1])
         upcoming_maintenance_subquery = (Maintenance.objects.filter(id=OuterRef('pk')).order_by('-maintenance_date').values('upcoming_maintenance')[:1])
 
         storages = Storage.objects.annotate(
@@ -41,3 +43,25 @@ class MachinaryDetail(View):
             "maintenances": maintenances_done,
             "machinary": machinary_detail
         })
+    
+class MaintenanceDetail(View):
+    def get(self, request, id):
+        maintenance_detail = Maintenance.objects.get(id=id)
+        return render(request, 'storage/maintenance_detail.html', {
+            "maintenance_detail": maintenance_detail
+        })
+    
+class MaintenanceFileDownload(View):
+    def get(self, request, id):
+        try:
+            maintenance = Maintenance.objects.get(id=id)
+            if not maintenance:
+                raise Http404("Este mantenimiento no tiene archivo asociado.")
+            file_path = maintenance.maintenance_file.path
+            if not file_path:
+                raise Http404("El archivo no se encuentra en el servidor.")
+            file_name = os.path.basename(file_path)
+            response = FileResponse(open(file_path, 'rb'), as_attachment=True, filename=file_name)
+            return response
+        except:
+            raise Http404("El archivo de mantenimiento no existe.")
