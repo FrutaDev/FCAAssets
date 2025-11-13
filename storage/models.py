@@ -1,5 +1,6 @@
 from django.db import models
 from datetime import timedelta, date
+from storage.utils.validation_file import validate_pdf
 
 # Create your models here.
 
@@ -52,7 +53,7 @@ class Maintenance(models.Model):
     maintenance_date = models.DateField()
     maintenance_provider = models.ForeignKey("Suplier", on_delete=models.SET_NULL, null=True)
     maintenance_image = models.ImageField(upload_to="storage/images/maintenances",null=True, blank=True)
-    maintenance_file = models.FileField(upload_to="storage/files", null=True, blank=True)
+    maintenance_file = models.FileField(upload_to="storage/files", null=True, blank=True, validators=[validate_pdf])
     upcoming_maintenance = models.DateField(blank=True, null=True)
     is_approved = models.BooleanField(default=False)
 

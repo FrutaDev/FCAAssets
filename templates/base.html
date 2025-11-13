@@ -7,13 +7,16 @@
     <title>
         {% block title_page %}{%endblock%}
     </title>
-    
     {%block script_file%}{% endblock %}
+    <link rel="stylesheet" href="{% static 'styles.css' %}">
     {% block css_file %}{% endblock %}
 
 </head>
-    <body>
-        {% block content %}{% endblock %}
-    </body>
+<body>
+    {% include 'header.html'%}
+        <main>
+            {% block content %}{% endblock %}
+        </main>
     {%include 'footer.html'%}
+</body>
 </html>

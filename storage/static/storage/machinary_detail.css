@@ -3,7 +3,6 @@ body {
     background-color: #f9fafb;
     color: #333;
     margin: 0;
-    padding: 0;
 }
 
 h1 {
@@ -90,6 +89,7 @@ tr:hover:nth-child(n+2) {
     width: 90%;
     max-width: 1000px;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+    height: auto;
 }
 
 .machinary-detail-image {

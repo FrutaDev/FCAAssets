@@ -6,7 +6,16 @@
 
 <header>
     <nav class="nav-header">
-        <a href="{% url 'landing-page' %}">Home</a>   
-        <a href="{% url 'index' %}">Challenges</a>   
+        <a class="home-header" href="/">
+            <img src="{% static 'images/fca.png' %}" alt="Logo UACh" class="logo-uach">
+        </a>
+        <span>
+            {{ user.username }}
+        </span>
     </nav>
+    <aside>
+        {% if user.is_authenticated %}
+            {% include 'logout.html'%}
+        {% endif %}
+    </aside>
 </header>

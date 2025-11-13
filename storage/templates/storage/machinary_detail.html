@@ -28,6 +28,10 @@
             </p>
             <div class="more-machinary-detail">
                 <p>
+                    Serial: <br>
+                    {{ machinary.serial }}
+                </p>
+                <p>
                     Fecha de adquisicion: <br>
                     {{ machinary.acquisition_date }}
                 </p>
@@ -56,6 +60,7 @@
                 </th>
             </tr>
             {% for maintenance in maintenances %}
+            {% if maintenance.is_approved %}
             <tr onclick="window.location='{% url 'maintenance-detail' maintenance.id %}'">
                 <td>
                     {{maintenance.machinary_maintenance.serial}}
@@ -70,6 +75,7 @@
                     {{maintenance.maintenance_provider}}
                 </td>
             </tr>
+            {% endif %}
             {% endfor %}
         </table>
     </section>

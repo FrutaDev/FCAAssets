@@ -131,3 +131,7 @@ STATICFILES_DIRS = [
 MEDIA_URL = '/management-assets/'
 
 MEDIA_ROOT = BASE_DIR / "uploads"
+
+LOGIN_REDIRECT_URL = '/'
+
+LOGIN_URL = '/accounts/login/'
