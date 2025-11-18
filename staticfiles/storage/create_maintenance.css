@@ -1,0 +1,103 @@
+.create-maintenance-form {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  min-height: calc(100vh - 160px); /* deja espacio para header y footer */
+  padding: 40px 20px;
+  background-color: #f8f9fa;
+}
+
+.create-maintenance-form form {
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 4px 25px rgba(0, 0, 0, 0.08);
+  padding: 35px 45px;
+  width: 100%;
+  max-width: 550px;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  transition: box-shadow 0.3s ease;
+}
+
+.create-maintenance-form form:hover {
+  box-shadow: 0 6px 30px rgba(0, 0, 0, 0.12);
+}
+
+h1 {
+  text-align: center;
+  color: #333;
+  margin-top: 30px;
+  font-size: 2rem;
+  font-weight: 700;
+}
+
+.create-maintenance-form p {
+  margin: 5px 0 3px 0;
+  font-weight: 600;
+  font-size: 0.95rem;
+  color: #555;
+}
+
+.create-maintenance-form select,
+.create-maintenance-form input[type="text"],
+.create-maintenance-form input[type="date"],
+.create-maintenance-form input[type="file"] {
+  width: 100%;
+  padding: 10px 12px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  background: #fdfdfd;
+  font-size: 1rem;
+  transition: border-color 0.25s, box-shadow 0.25s;
+}
+
+.create-maintenance-form select:focus,
+.create-maintenance-form input:focus {
+  border-color: #007bff;
+  box-shadow: 0 0 6px rgba(0, 123, 255, 0.25);
+  outline: none;
+}
+
+.create-maintenance-form input[type="file"] {
+  background: #fff;
+  border: 1px dashed #ccc;
+  cursor: pointer;
+  padding: 12px;
+  transition: border-color 0.2s;
+}
+
+.create-maintenance-form input[type="file"]:hover {
+  border-color: #007bff;
+}
+
+.create-maintenance-form button {
+  background-color: #007bff;
+  color: white;
+  font-weight: 600;
+  border: none;
+  border-radius: 8px;
+  padding: 12px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color 0.2s, transform 0.1s;
+  margin-top: 10px;
+}
+
+.create-maintenance-form button:hover {
+  background-color: #0056b3;
+}
+
+.create-maintenance-form button:active {
+  transform: scale(0.98);
+}
+
+@media (max-width: 600px) {
+  .create-maintenance-form form {
+    padding: 25px 20px;
+  }
+
+  h1 {
+    font-size: 1.6rem;
+  }
+}

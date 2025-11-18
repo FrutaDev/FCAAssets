@@ -10,7 +10,6 @@ from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.urls import reverse_lazy
 from django.contrib.auth.views import LoginView
 
-
 class Index(LoginRequiredMixin, UserPassesTestMixin, View):
     login_url = '/accounts/login/'
     redirect_field_name = 'redirect_to'
@@ -28,13 +27,6 @@ class Index(LoginRequiredMixin, UserPassesTestMixin, View):
             latest_maintenance_suppliers=Subquery(latest_maintenance_providers),
             latest_maintenance_upcoming=Subquery(upcoming_maintenance_subquery)
         )
-
-        for storage in storages:
-            if storage.latest_maintenance_upcoming and storage.latest_maintenance_upcoming <= date.today() - timedelta(days=30) or not storage.latest_maintenance_upcoming:
-                storage.necessary_maintenance = True
-            else:
-                storage.necessary_maintenance = False
-            storage.save(update_fields=['necessary_maintenance'])
 
         requires = Storage.objects.filter(necessary_maintenance=True).count()
         not_requires = Storage.objects.filter(necessary_maintenance=False).count()

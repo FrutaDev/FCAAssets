@@ -1,0 +1,19 @@
+.footer {
+    text-align: center;
+    padding: 1rem;
+    background-color: #561c628d;
+    border-top: 1px solid #e7e7e7;
+    margin: 0;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    font-family: "Segoe UI", Arial, sans-serif;
+    color: white;
+
+}
+
+#created-by {
+    font-size: 0.9rem;
+    color: white;
+    opacity: 0.4;
+}

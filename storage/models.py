@@ -57,6 +57,10 @@ class Maintenance(models.Model):
     upcoming_maintenance = models.DateField(blank=True, null=True)
     is_approved = models.BooleanField(default=False)
 
+    email_sent_30_days = models.BooleanField(default=False)
+    email_sent_7_days = models.BooleanField(default=False)
+    email_sent_due = models.BooleanField(default=False)
+
 
     def __str__(self):
         return f"{self.machinary_maintenance} mantenimiento realizado por {self.maintenance_provider} el {self.maintenance_date}"
