@@ -20,9 +20,25 @@ class Storage(models.Model):
     brand = models.ForeignKey("Brand", on_delete=models.CASCADE, null=True, related_name="brand")
     lab_name = models.ForeignKey('Labs', related_name='labs', on_delete=models.CASCADE)
     necessary_maintenance = models.BooleanField(default=False)
+    upcoming_maintenance = models.DateField(blank=True, null=True)
+
 
     def __str__(self):
         return self.name.type_name
+    
+    def save(self,*args, **kwargs):
+        today = date.today()
+        if not self.acquisition_date:
+            self.acquisition_date = today
+        
+        if self.upcoming_maintenance is None:
+            self.upcoming_maintenance = self.acquisition_date + timedelta(days=365)
+            self.necessary_maintenance = self.upcoming_maintenance - today <= timedelta(days=30)
+        else:
+            self.necessary_maintenance = self.upcoming_maintenance - today <= timedelta(days=30)
+        
+
+        super().save(*args, **kwargs)
 
 
 
@@ -54,7 +70,6 @@ class Maintenance(models.Model):
     maintenance_provider = models.ForeignKey("Suplier", on_delete=models.SET_NULL, null=True)
     maintenance_image = models.ImageField(upload_to="storage/images/maintenances",null=True, blank=True)
     maintenance_file = models.FileField(upload_to="storage/files", null=True, blank=True, validators=[validate_pdf])
-    upcoming_maintenance = models.DateField(blank=True, null=True)
     is_approved = models.BooleanField(default=False)
 
     email_sent_30_days = models.BooleanField(default=False)
@@ -64,8 +79,3 @@ class Maintenance(models.Model):
 
     def __str__(self):
         return f"{self.machinary_maintenance} mantenimiento realizado por {self.maintenance_provider} el {self.maintenance_date}"
-
-    def save(self,*args, **kwargs):
-        if not self.upcoming_maintenance:
-            self.upcoming_maintenance = self.maintenance_date + timedelta(days=365)
-        super().save(*args, **kwargs)

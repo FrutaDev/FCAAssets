@@ -1,5 +1,4 @@
-<p>Hola,</p>
-<p>Faltan 7 días para el mantenimiento programado de la maquinaria <strong>{{ machine.name }}</strong> (serial: {{ machine.serial }}).</p>
-<p>Fecha programada: {{ maintenance.upcoming_maintenance }}</p>
-<p>Descripción breve: ...</p>
+<p>Recordatorio</p>
+<p>Faltan {{days_remaining}} días para el mantenimiento programado de la maquinaria <strong>{{ maintenance.machinary_maintenance.name }}</strong> (serial: <strong>{{ maintenance.machinary_maintenance.serial }}) </strong>.</p>
+<p>Fecha programada: <strong>{{ maintenance.upcoming_maintenance }}</strong></p>
 <p>Saludos.</p>

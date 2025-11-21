@@ -18,24 +18,25 @@ class Index(LoginRequiredMixin, UserPassesTestMixin, View):
         return user.is_superuser or self.request.user.groups.filter(name='admins').exists()
 
     def get(self, request):
-        latest_maintenance_subquery = (Maintenance.objects.filter(id=OuterRef('pk'), is_approved=True).order_by('-maintenance_date').values('maintenance_date')[:1])
-        latest_maintenance_providers = (Maintenance.objects.filter(id=OuterRef('pk'), is_approved=True).order_by('-maintenance_date').values('maintenance_provider__name_provider')[:1])
-        upcoming_maintenance_subquery = (Maintenance.objects.filter(id=OuterRef('pk'), is_approved=True).order_by('-maintenance_date').values('upcoming_maintenance')[:1])
+        latest_maintenance_subquery = (Maintenance.objects.filter(machinary_maintenance=OuterRef('pk'), is_approved=True).order_by('-maintenance_date').values('maintenance_date')[:1])
+        latest_maintenance_providers = (Maintenance.objects.filter(machinary_maintenance=OuterRef('pk'), is_approved=True).order_by('-maintenance_date').values('maintenance_provider__name_provider')[:1])
 
         storages = Storage.objects.annotate(
             latest_maintenance_date=Subquery(latest_maintenance_subquery),
             latest_maintenance_suppliers=Subquery(latest_maintenance_providers),
-            latest_maintenance_upcoming=Subquery(upcoming_maintenance_subquery)
         )
 
         requires = Storage.objects.filter(necessary_maintenance=True).count()
         not_requires = Storage.objects.filter(necessary_maintenance=False).count()
+
+
 
         return render(request, "storage/index.html", {
             "maintenances": storages,
             "requires": requires,
             "not_requires": not_requires
         })
+    
 class MachinaryDetail(LoginRequiredMixin, UserPassesTestMixin, View):
     login_url = '/login/'
     redirect_field_name = 'redirect_to'
@@ -61,6 +62,7 @@ class MaintenanceDetail(LoginRequiredMixin, UserPassesTestMixin, View):
         return render(request, 'storage/maintenance_detail.html', {
             "maintenance_detail": maintenance_detail
         })
+    
 class MaintenanceFileDownload(LoginRequiredMixin, View):
     login_url = '/login/'
     redirect_field_name = 'redirect_to'
@@ -106,6 +108,7 @@ class CreateMaintenance(LoginRequiredMixin, UserPassesTestMixin, View):
         return render(request, 'storage/create_maintenance.html', {
             'form': form
         })
+    
 class CustomLoginView(LoginView):
     template_name = 'registration/login.html'
 

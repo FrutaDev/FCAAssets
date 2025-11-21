@@ -47,7 +47,7 @@
                 {{ maintenance.latest_maintenance_suppliers }}
             </td>
             <td>    
-                {{ maintenance.latest_maintenance_upcoming }}
+                {{ maintenance.upcoming_maintenance }}
             </td>
             <td class="{% if maintenance.necessary_maintenance %} require_maintenance {% else %} not_require_maintenance {% endif %}">
                 {% if maintenance.necessary_maintenance %}
