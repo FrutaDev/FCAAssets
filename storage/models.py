@@ -21,6 +21,10 @@ class Storage(models.Model):
     lab_name = models.ForeignKey('Labs', related_name='labs', on_delete=models.CASCADE)
     necessary_maintenance = models.BooleanField(default=False)
     upcoming_maintenance = models.DateField(blank=True, null=True)
+    
+    email_sent_30_days = models.BooleanField(default=False)
+    email_sent_7_days = models.BooleanField(default=False)
+    email_sent_due = models.BooleanField(default=False)
 
 
     def __str__(self):
@@ -72,10 +76,5 @@ class Maintenance(models.Model):
     maintenance_file = models.FileField(upload_to="storage/files", null=True, blank=True, validators=[validate_pdf])
     is_approved = models.BooleanField(default=False)
 
-    email_sent_30_days = models.BooleanField(default=False)
-    email_sent_7_days = models.BooleanField(default=False)
-    email_sent_due = models.BooleanField(default=False)
-
-
     def __str__(self):
-        return f"{self.machinary_maintenance} mantenimiento realizado por {self.maintenance_provider} el {self.maintenance_date}"
+        return f"{self.machinary_maintenance} mantenimiento realizado por {self.maintenance_provider} el {self.maintenance_date} estatus {'Aprobado' if self.is_approved else 'Pendiente'}"

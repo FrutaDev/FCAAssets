@@ -2,16 +2,15 @@ from django.core.mail import EmailMessage
 from django.template.loader import render_to_string
 from django.conf import settings
 from django.db import transaction
-from datetime import date
+from datetime import date, timedelta
 from django.utils import timezone
-from storage.models import Maintenance
+from storage.models import Storage
 import logging
-
 
 logger = logging.getLogger("maintenance_scheduler")
 
 
-def send_maintenance_email(maintenance, days_before):
+def send_maintenance_email(storage, days_before):
 
     if days_before == 30:
         kind = "30_days"
@@ -20,30 +19,29 @@ def send_maintenance_email(maintenance, days_before):
     else:
         kind = "due"
 
-    return __send_email_for(maintenance, kind)
+    return __send_email_for(storage, kind)
 
 
-def __send_email_for(maintenance, kind):
+def __send_email_for(storage, kind):
 
     if kind == '30_days':
-        subject = f'Recordatorio: Mantenimiento para {maintenance.machinary_maintenance.serial} en 30 días'
+        subject = f'Recordatorio: Mantenimiento para {storage.serial} en 30 días'
         template = 'storage/emails/email_sent_30_days.html'
         flag_field = 'email_sent_30_days'
 
     elif kind == '7_days':
-        subject = f'Recordatorio: Mantenimiento para {maintenance.machinary_maintenance.serial} en 7 días'
+        subject = f'Recordatorio: Mantenimiento para {storage.serial} en 7 días'
         template = 'storage/emails/email_sent_7_days.html'
         flag_field = 'email_sent_7_days'
 
     else:
-        subject = f'Notificación: Mantenimiento para {maintenance.machinary_maintenance.serial} es hoy'
+        subject = f'Notificación: Mantenimiento para {storage.serial} es hoy'
         template = 'storage/emails/email_sent_due.html'
         flag_field = 'email_sent_due'
 
     context = {
-        'maintenance': maintenance,
-        'machinery': maintenance.machinary_maintenance,
-        'days_remaining': (maintenance.maintenance_date - date.today()).days,
+        'maintenance': storage,
+        'days_remaining': (storage.upcoming_maintenance - date.today()).days,
     }
 
     body = render_to_string(template, context)
@@ -58,8 +56,8 @@ def __send_email_for(maintenance, kind):
         msg.content_subtype = "html"
         msg.send(fail_silently=False)
 
-        setattr(maintenance, flag_field, True)
-        maintenance.save(update_fields=[flag_field])
+        setattr(storage, flag_field, True)
+        storage.save(update_fields=[flag_field])
 
 
 def job_send_maintenance_emails():
@@ -72,8 +70,8 @@ def job_send_maintenance_emails():
     ]
 
     for days, flag in jobs:
-        records = Maintenance.objects.filter(
-            maintenance_date=today + timedelta(days=days),
+        records = Storage.objects.filter(
+            upcoming_maintenance=today + timedelta(days=days),
             **{flag: False}
         )
 
