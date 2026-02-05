@@ -1,0 +1,213 @@
+table {
+    margin: 20px auto;
+    width: 95%;
+    border-collapse: collapse;
+    background-color: #fdfdfd;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+th {
+    background-color: #2c3e50;
+    color: white;
+    padding: 15px;
+    text-transform: uppercase;
+    font-size: 12px;
+}
+
+.main-wrapper {
+    max-width: 1100px;
+    margin: 40px auto;
+    padding: 0 20px;
+}
+
+.table-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
+    padding-bottom: 15px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.table-header h3 {
+    color: #ffffff;
+    margin: 0;
+    font-size: 1.6rem;
+}
+
+.table-header h3 span,
+.table-header h3 small {
+    color: #f3e8ff;
+    font-weight: 300;
+}
+
+.add-machinary-btn {
+    text-decoration: none;
+    transition: transform 0.2s ease;
+}
+
+.add-machinary-btn:hover {
+    transform: translateY(-2px);
+}
+
+.add-machinary {
+    background: #ffffff;
+    padding: 10px 20px;
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    transition: 0.3s;
+}
+
+.add-machinary span {
+    color: #800000;
+    font-weight: 700;
+}
+
+.add-machinary img {
+    width: 16px;
+    filter: none;
+}
+
+.storage-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 25px;
+    justify-content: center;
+}
+
+.storage-card {
+    background: white;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
+    transition: 0.3s;
+    cursor: pointer;
+}
+
+.storage-card:hover {
+    transform: translateY(-8px);
+}
+
+.image-container {
+    height: 180px;
+    background: #eee;
+}
+
+.image-container img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.info-container {
+    padding: 20px;
+}
+
+.tags-row {
+    margin-bottom: 10px;
+}
+
+.tag-serial,
+.tag-floor {
+    font-size: 0.7rem;
+    padding: 3px 8px;
+    border-radius: 4px;
+    background: #547faa41;
+    color: #000000;
+    font-weight: 700;
+    margin-right: 5px;
+}
+
+.type-title {
+    margin: 0;
+    color: #1e293b;
+    font-size: 1.2rem;
+}
+
+.brand-text {
+    color: #64748b;
+    font-size: 0.9rem;
+    margin: 5px 0 15px 0;
+}
+
+.maintenance-status {
+    border-top: 1px solid #f1f5f9;
+    padding-top: 15px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.m-info label {
+    display: block;
+    font-size: 0.6rem;
+    text-transform: uppercase;
+    color: #94a3b8;
+}
+
+.m-info span {
+    font-weight: 700;
+    font-size: 0.85rem;
+}
+
+.m-status {
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: #10b981;
+}
+
+.m-status.urgent {
+    color: #ef4444;
+}
+
+/* Contenedor del estatus */
+.status-cell {
+    text-align: center;
+    padding: 12px 8px;
+}
+
+/* Estilo común para las etiquetas (Badges) */
+.status-cell span {
+    display: inline-block;
+    padding: 5px 12px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 700;
+    width: 110px;
+    /* Ancho fijo para que todos midan lo mismo */
+}
+
+/* Colores por estado */
+.status-ad {
+    background-color: #dcfce7;
+    color: #166534;
+    border: 1px solid #bbf7d0;
+    padding: 5px;
+    border-radius: 10px;
+}
+
+.status-pv {
+    background-color: #fef9c3;
+    color: #854d0e;
+    border: 1px solid #fef08a;
+    padding: 5px;
+    border-radius: 10px;
+}
+
+.status-ve {
+    background-color: #fee2e2;
+    color: #991b1b;
+    border: 1px solid #fecaca;
+    padding: 5px;
+    border-radius: 10px;
+}
+
+/* Hover en filas */
+tr:hover:nth-child(n+1) {
+    background-color: #f1f5f9;
+    cursor: pointer;
+}

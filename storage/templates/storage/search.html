@@ -1,0 +1,73 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block css_file %}
+<link rel="stylesheet" href="{% static 'storage/index.css' %}">
+<link rel="stylesheet" href="{% static 'storage/table-search.css' %}">
+{% endblock %}
+
+{% block title_page %}{{ laboratory }}{% endblock %}
+
+{% block content %}
+<div class="main-wrapper">
+    <header class="table-header">
+        <h3>Edificio: <span>{{ laboratory|default:"General" }}</span>
+            {% if machinary_type %}
+            <small> - {{ machinary_type.type_name }}</small>
+            {% endif %}
+        </h3>
+
+        <a href="{% url 'create-machinary' %}" class="add-machinary-btn">
+            <div class="add-machinary">
+                <img src="{% static 'images/add.png' %}" alt="">
+                <span>Añadir Equipo</span>
+            </div>
+        </a>
+    </header>
+
+    <div class="storage-grid">
+        {% for storage in results %}
+        <div class="storage-card" onclick="window.location='{% url 'machinary-detail' storage.serial %}'">
+            <div class="image-container">
+                {% if storage.image %}
+                <img src="{{ storage.image.url }}" alt="">
+                {% else %}
+                <div class="no-image">Sin imagen</div>
+                {% endif %}
+            </div>
+
+            <div class="info-container">
+                <div class="tags-row">
+                    <span class="tag-serial">Serial: {{ storage.serial }}</span>
+                    <span class="tag-floor">Piso {{ storage.floor }}</span>
+                </div>
+                <h4 class="type-title">{{ storage.name.type_name }}</h4>
+                <p class="brand-text">{{ storage.brand.brand_name }}</p>
+
+                <div class="maintenance-status">
+                    <div class="m-info">
+                        <label>Próximo mantenimiento</label>
+                        <span>{{ storage.upcoming_maintenance|date:"d/m/Y" }}</span>
+                    </div>
+                    {% if storage.necessary_maintenance == 'VE' %}
+                    <div class="m-status status-ve">
+                        Vencido
+                    </div>
+                    {% elif storage.necessary_maintenance == 'PV' %}
+                    <div class="m-status status-pv">
+                        Por vencer
+                    </div>
+                    {% else %}
+                    <div class="m-status status-ad">
+                        Al día
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        {% empty %}
+        <div class="no-results">No hay equipos registrados.</div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

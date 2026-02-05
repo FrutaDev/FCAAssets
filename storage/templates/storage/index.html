@@ -1,21 +1,21 @@
 {% extends "base.html" %}
-{%load static%}
+{% load static %}
 
 
 {% block script_file%}
-        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 {%endblock%}
 
 {% block css_file %}
-    <link rel="stylesheet" href="{% static 'storage/index.css' %}">
-    <link rel="stylesheet" href="{% static 'storage/table.css' %}">
+<link rel="stylesheet" href="{% static 'storage/index.css' %}">
+<link rel="stylesheet" href="{% static 'storage/table.css' %}">
 {% endblock %}
 
-{% block  title_page %}
-    Maquinaria Disponible
+{% block title_page %}
+Maquinaria Disponible
 {% endblock %}
 
 {% block content %}
-        {% include '../storage/includes/chart.html' %}
-        {% include '../storage/includes/table.html' %}
+{% include '../storage/includes/chart.html' %}
+{% include '../storage/includes/table.html' %}
 {% endblock %}

@@ -1,0 +1,56 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block css_file %}
+<link rel="stylesheet" href="{% static 'storage/create-machinary.css' %}">
+{% endblock %}
+
+{% block title_page %}
+Editar Maquinaria
+{% endblock %}
+
+{% block content %}
+<h1>Editar Equipo: {{ machinary.name }}</h1>
+<main class="create-machinary-form">
+    <form method="POST" action="{% url 'edit-machinary' machinary.serial %}" enctype="multipart/form-data">
+        {% csrf_token %}
+
+        <span>Serial del equipo</span>
+        {{ form.serial }}
+
+        <span>Imagen del equipo</span>
+        <div class="image-field-wrapper">
+            {{ form.image }}
+        </div>
+
+        <span>Fecha de adquisición</span>
+        {{ form.acquisition_date }}
+
+        <span>Tipo de maquinaria</span>
+        {{ form.name }}
+
+        <span>Marca</span>
+        {{ form.brand }}
+
+        <span>Laboratorio / Ubicación</span>
+        {{ form.lab_name }}
+
+        <span>Piso</span>
+        {{ form.floor }}
+
+        <span>Próximo mantenimiento (Opcional)</span>
+        {{ form.upcoming_maintenance }}
+
+        <button class="btn-submit" type="submit">Guardar Cambios</button>
+    </form>
+
+    {% if success %}
+    <div class="success-message">
+        <p>¡Cambios guardados exitosamente!</p>
+        <a href="{% url 'machinary-detail' machinary.serial %}"
+            style="display:block; margin-top:10px; text-decoration:none; color:#15803d; font-weight:bold;">Volver a
+            Detalles</a>
+    </div>
+    {% endif %}
+</main>
+{% endblock %}

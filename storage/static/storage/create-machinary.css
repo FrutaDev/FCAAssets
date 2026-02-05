@@ -1,0 +1,286 @@
+:root {
+    --primary-edit: #4f46e5;
+    /* Un índigo más distintivo para edición */
+    --slate-800: #1e293b;
+    --slate-500: #64748b;
+    --gray-100: #f1f5f9;
+    --white: #ffffff;
+}
+
+h1 {
+    text-align: center;
+    color: var(--slate-800);
+    margin: 40px 0 25px;
+    font-size: 2rem;
+    font-weight: 700;
+}
+
+.create-machinary-form {
+    max-width: 800px;
+    margin: 0 auto 60px;
+    background: var(--white);
+    padding: 40px;
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+    border: 1px solid #e2e8f0;
+}
+
+form {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    /* Dos columnas iguales */
+    gap: 25px 20px;
+    /* Espacio mayor vertical para que no se amontonen las etiquetas */
+}
+
+/* Forzar ancho uniforme en TODOS los elementos de formulario */
+form span,
+form .btn-submit,
+.success-message {
+    grid-column: span 2;
+}
+
+form span {
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    font-weight: 700;
+    color: var(--slate-500);
+    letter-spacing: 0.05em;
+    margin-bottom: -15px;
+    /* Controla la proximidad a la etiqueta */
+}
+
+/* LA CLAVE: Unificación de anchos */
+form input,
+form select,
+form textarea,
+form .django-select2 {
+    /* Por si usas select2 en el futuro */
+    width: 100% !important;
+    box-sizing: border-box !important;
+    /* Incluye padding en el ancho total */
+    padding: 12px 16px;
+    border: 1.5px solid #e2e8f0;
+    border-radius: 8px;
+    background-color: var(--gray-100);
+    font-size: 0.95rem;
+    color: var(--slate-800);
+    transition: all 0.2s ease;
+}
+
+form input:focus,
+form select:focus {
+    outline: none;
+    border-color: var(--primary-edit);
+    background-color: var(--white);
+    box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1);
+}
+
+/* Estilo para el input de archivo (Imagen) */
+form input[type="file"] {
+    padding: 8px;
+    background: #fff;
+    border: 1.5px dashed #cbd5e1;
+    cursor: pointer;
+}
+
+/* Botón Guardar Cambios */
+.btn-submit {
+    background-color: var(--primary-edit);
+    color: var(--white);
+    padding: 16px;
+    border: none;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-weight: 700;
+    cursor: pointer;
+    margin-top: 15px;
+    transition: filter 0.2s, transform 0.1s;
+}
+
+.btn-submit:hover {
+    filter: brightness(1.1);
+    transform: translateY(-1px);
+}
+
+/* Mensaje de éxito */
+.success-message {
+    background-color: #f0fdf4;
+    border: 1px solid #bbf7d0;
+    padding: 20px;
+    border-radius: 8px;
+    text-align: center;
+    margin-top: 25px;
+}
+
+.success-message p {
+    color: #166534;
+    margin: 0;
+    font-weight: 600;
+}
+
+/* Responsive */
+@media (max-width: 600px) {
+    form {
+        grid-template-columns: 1fr;
+    }
+
+    form span,
+    form .btn-submit {
+        grid-column: span 1;
+    }
+}
+
+/* Forzar que el campo de imagen ocupe siempre las dos columnas */
+/* y no intente mezclarse con otros inputs */
+form .image-field-wrapper,
+form input[type="file"] {
+    grid-column: span 2;
+}
+
+/* Estilo para los textos que genera Django (Currently, Change, Clear) */
+.create-machinary-form form {
+    color: var(--slate-800);
+    font-size: 0.9rem;
+}
+
+/* Alineación del widget de imagen actual */
+.create-machinary-form br {
+    display: none;
+    /* Quitamos los saltos de línea feos de Django */
+}
+
+/* Estilo para el enlace y el checkbox de borrar imagen */
+.create-machinary-form a {
+    color: var(--primary-edit);
+    text-decoration: none;
+    font-weight: 500;
+    margin-right: 15px;
+}
+
+.create-machinary-form input[type="checkbox"] {
+    width: auto !important;
+    /* Que no ocupe el 100% */
+    display: inline-block;
+    margin-left: 10px;
+    cursor: pointer;
+}
+
+/* Contenedor del input de archivo nuevo para que no se pegue */
+form input[type="file"] {
+    margin-top: 10px;
+    background: white;
+    border: 2px dashed #cbd5e1;
+}
+
+/* --- Inline Create Styles --- */
+.input-with-add {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    width: 100%;
+}
+
+.input-with-add select {
+    flex: 1;
+}
+
+.btn-add-inline {
+    background-color: #d1fae5;
+    color: #059669;
+    border: 1px solid #6ee7b7;
+    width: 42px;
+    height: 42px;
+    /* Match input height approximately */
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 1.5rem;
+    line-height: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s;
+    padding-bottom: 4px;
+    /* visual center fix */
+}
+
+.btn-add-inline:hover {
+    background-color: #a7f3d0;
+    transform: scale(1.05);
+}
+
+/* --- Modal Styles --- */
+.modal-overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 1000;
+    align-items: center;
+    justify-content: center;
+    backdrop-filter: blur(2px);
+}
+
+.modal-content {
+    background-color: white;
+    padding: 30px;
+    border-radius: 12px;
+    width: 90%;
+    max-width: 400px;
+    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+}
+
+.modal-content h3 {
+    margin-top: 0;
+    color: var(--slate-800);
+    font-size: 1.25rem;
+    margin-bottom: 20px;
+}
+
+.modal-input {
+    width: 100%;
+    padding: 12px 16px;
+    border: 2px solid #e2e8f0;
+    border-radius: 8px;
+    font-size: 1rem;
+    margin-bottom: 20px;
+    box-sizing: border-box;
+}
+
+.modal-input:focus {
+    border-color: var(--primary-edit);
+    outline: none;
+}
+
+.modal-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+}
+
+.btn-cancel {
+    background: transparent;
+    border: 1px solid #cbd5e1;
+    padding: 8px 16px;
+    border-radius: 6px;
+    cursor: pointer;
+    color: var(--slate-500);
+    font-weight: 600;
+}
+
+.btn-confirm {
+    background-color: var(--primary-edit);
+    color: white;
+    border: none;
+    padding: 8px 20px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: 600;
+}
+
+.btn-confirm:hover {
+    background-color: #4338ca;
+}

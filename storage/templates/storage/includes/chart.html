@@ -1,35 +1,48 @@
-
 <div class="chart-header">
     <h2>Estado de mantenimiento de maquinaria</h2>
 </div>
 
-<div class="chart-container">
-        <canvas id="maintenanceChart"></canvas>
+<div class="chart-container" style="position: relative; height:40vh; width:70%; z-index: 0;">
+    <canvas id="maintenanceChart"></canvas>
 </div>
 
 <script>
     const ctx = document.getElementById('maintenanceChart').getContext('2d');
     const maintenanceChart = new Chart(ctx, {
-        type: 'doughnut',
+        type: 'bar',
         data: {
-            labels: ['Requiere mantenimiento', 'No requiere mantenimiento'],
+            labels: ['Al día', 'Por vencer', 'Vencido'],
             datasets: [{
-                data: [{{ requires }}, {{ not_requires }}],
-                backgroundColor: ['#e74c3c', '#2ecc71'],
-                borderColor: ['#fff', '#fff'],
-                borderWidth: 2,
-            }]
+                label: 'Cantidad de Equipos',
+                data: [{{ up_to_date }}, {{ expiring }}, {{ expired }}],
+    backgroundColor: [
+        '#2ecc71',
+        '#f1c40f',
+        '#e74c3c'
+    ],
+        barThickness: 140,
+            maxBarThickness: 140,
+                borderColor: [
+                    '#27ae60',
+                    '#f39c12',
+                    '#c0392b'
+                ],
+                    borderWidth: 1,
+                        borderRadius: 5
+        }]
+    },
+    options: {
+        responsive: true,
+            maintainAspectRatio: false,
+                scales: {
+            y: {
+                beginAtZero: true,
+                    ticks: { stepSize: 1 }
+            }
         },
-        options: {
-            plugins: {
-                legend: {
-                    position: 'bottom',
-                    labels: {
-                        font: { size: 14 }
-                    }
-                }
-            },
-            cutout: '65%',
+        plugins: {
+            legend: { display: false }
         }
-    });
+    }
+});
 </script>

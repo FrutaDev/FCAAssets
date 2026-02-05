@@ -2,81 +2,92 @@
 {% load static %}
 
 {% block css_file %}
-    <link rel="stylesheet" href="{% static 'storage/machinary_detail.css' %}">
+<link rel="stylesheet" href="{% static 'storage/machinary_detail.css' %}">
 {% endblock %}
 
 {% block title_page %}
-    Detalles de maquinaria
+Detalles de maquinaria
 {% endblock %}
 
 {% block content %}
-    <h1>Detalles de maquinaria</h1>
-    <main class="machinary-detail">
-        <div class="machinary-detail-image">
-            <img src="{% if machinary.image %} {{machinary.image.url}} {% else %} "" {% endif %}" alt="Imagen de maquinaria">
-        </div>
-        <div class="machinary-detail-info">
-            <h3>
+<main class="machinary-detail">
+    <div class="machinary-detail-image">
+        <img src="{% if machinary.image %} {{machinary.image.url}} {% else %} "" {% endif %}"
+            alt="Imagen de maquinaria">
+    </div>
+    <div class="machinary-detail-info">
+        <h3>
             {{ machinary.name }} - {{ machinary.brand }}
-            </h3>
-            <p class="{% if machinary.necessary_maintenance %} necessary-maintenance {% else %} unnecessary-maintenance {% endif %}">
-                {% if machinary.necessary_maintenance %}
-                    Requiere mantenimiento
-                {% else %}
-                    Mantenimiento al día
-                {% endif %}
+            <a href="{% url 'edit-machinary' machinary.serial %}" class="btn-edit">Editar</a>
+        </h3>
+        {% if machinary.necessary_maintenance == 'VE' %}
+        <p class="status-badge status-ve">
+            Vencido
+        </p>
+        {% elif machinary.necessary_maintenance == 'PV' %}
+        <p class="status-badge status-pv">
+            Por vencer
+        </p>
+        {% else %}
+        <p class="status-badge status-ad">
+            Al día
+        </p>
+        {% endif %}
+        <div class="more-machinary-detail">
+            <p>
+                Serial: <br>
+                {{ machinary.serial }}
             </p>
-            <div class="more-machinary-detail">
-                <p>
-                    Serial: <br>
-                    {{ machinary.serial }}
-                </p>
-                <p>
-                    Fecha de adquisicion: <br>
-                    {{ machinary.acquisition_date }}
-                </p>
-                <p>
-                    Ubicación: <br>
-                    {{ machinary.lab_name }}
-                </p>
-            </div>
+            <p>
+                Fecha de adquisicion: <br>
+                {{ machinary.acquisition_date }}
+            </p>
+            <p>
+                Ubicación: <br>
+                {{ machinary.lab_name }}
+            </p>
+            <p>
+                Siguiente mantenimiento: <br>
+                {{ machinary.upcoming_maintenance }}
+            </p>
         </div>
-    </main>
+    </div>
+</main>
 
-    <section>
-        <table>
-            <tr>
-                <th>
-                    Serial
-                </th>
-                <th>
-                    Tipo de Maquinaria
-                </th>
-                <th>
-                    Fecha de Mantenimiento
-                </th>
-                <th>
-                    Proveedor de Mantenimiento
-                </th>
-            </tr>
-            {% for maintenance in maintenances %}
-            {% if maintenance.is_approved %}
-            <tr onclick="window.location='{% url 'maintenance-detail' maintenance.id %}'">
-                <td>
-                    {{maintenance.machinary_maintenance.serial}}
-                </td>
-                <td>
-                    {{maintenance.machinary_maintenance.name}}
-                </td>
-                <td>
-                    {{maintenance.maintenance_date}}
-                </td>
-                <td>    
-                    {{maintenance.maintenance_provider}}
-                </td>
-            </tr>
-            {% endif %}
-            {% endfor %}
-        </table>
-    </section>
+<section>
+    <table>
+        <tr>
+            <th>
+                Serial
+            </th>
+            <th>
+                Tipo de Maquinaria
+            </th>
+            <th>
+                Fecha de Mantenimiento
+            </th>
+            <th>
+                Proveedor de Mantenimiento
+            </th>
+        </tr>
+        {% for maintenance in maintenances %}
+        {% if maintenance.is_approved %}
+        <tr onclick="window.location='{% url 'maintenance-detail' maintenance.id %}'">
+            <td>
+                {{maintenance.machinary_maintenance.serial}}
+            </td>
+            <td>
+                {{maintenance.machinary_maintenance.name}}
+            </td>
+            <td>
+                {{maintenance.maintenance_date}}
+            </td>
+            <td>
+                {{maintenance.maintenance_provider}}
+            </td>
+        </tr>
+        {% endif %}
+        {% endfor %}
+    </table>
+</section>
 {% endblock %}

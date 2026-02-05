@@ -22,7 +22,6 @@ def start_scheduler():
     if "runserver" in sys.argv and os.environ.get("RUN_MAIN") != "true":
         return
     
-    # Evitar 
     if os.path.exists(LOCK_FILE):
         print("Scheduler ya está corriendo")
         return

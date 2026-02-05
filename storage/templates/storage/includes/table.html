@@ -1,62 +1,41 @@
-<table>
-    <tr>
-        <th>
-            Serial
-        </th>
-        <th>
-            Tipo
-        </th>
-        <th>
-            Marca
-        </th>
-        <th>
-            Laboratorio
-        </th>
-        <th>
-            Ultimo mantenimiento
-        </th>
-        <th>
-            Proveedor del mantenimiento
-        </th>
-        <th>
-            Siguiente mantenimiento
-        </th>
-        <th>
-            Estatus
-        </th>
-    </tr>
-
-    {% for maintenance in maintenances %}
-        <tr onclick="window.location='{% url 'machinary-detail' maintenance.serial %}'">
-            <td>
-                {{ maintenance.serial }}
-            </td>
-            <td>
-                {{ maintenance.name.type_name }}
-            </td>
-            <td>
-                {{ maintenance.brand.brand_name }}
-            </td>
-            <td>
-                {{ maintenance.lab_name }}
-            </td>
-            <td>
-                {{ maintenance.latest_maintenance_date }}
-            </td>
-            <td>
-                {{ maintenance.latest_maintenance_suppliers }}
-            </td>
-            <td>    
-                {{ maintenance.upcoming_maintenance }}
-            </td>
-            <td class="{% if maintenance.necessary_maintenance %} require_maintenance {% else %} not_require_maintenance {% endif %}">
-                {% if maintenance.necessary_maintenance %}
-                <span>Mantenimiento necesario</span>
-                {% else %}
-                <span>Mantenimiento realizado</span>
-                {% endif %}
-            </td>
-        </tr>
-        {% endfor %}
-        
-</table>
+<div class="table-container">
+    <table class="machinary-table">
+        <thead>
+            <tr>
+                <th>Serial</th>
+                <th>Tipo</th>
+                <th>Marca</th>
+                <th>Edificio</th>
+                <th>Último Mantenimiento</th>
+                <th>Proveedor</th>
+                <th>Siguiente</th>
+                <th>Estatus</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for maintenance in maintenances %}
+            <tr onclick="window.location='{% url 'machinary-detail' maintenance.serial %}'">
+                <td style="font-weight: 600; color: #2563eb;">{{ maintenance.serial }}</td>
+                <td>{{ maintenance.name.type_name }}</td>
+                <td>{{ maintenance.brand.brand_name }}</td>
+                <td>{{ maintenance.lab_name }}</td>
+                <td>{{ maintenance.latest_maintenance_date|date:"d/m/Y"|default:"N/A" }}</td>
+                <td>{{ maintenance.latest_maintenance_suppliers|default:"N/A" }}</td>
+                <td style="font-weight: 600;">{{ maintenance.upcoming_maintenance|date:"d/m/Y" }}</td>
+                <td class="status-cell">
+                    {% if maintenance.necessary_maintenance == 'AD' or maintenance.necessary_maintenance == 'AL_DIA' %}
+                    <span class="status-ad">Al día</span>
+                    {% elif maintenance.necessary_maintenance == 'PV' or maintenance.necessary_maintenance == 'POR_VENCER'%}
+                    <span class="status-pv">Por vencer</span>
+                    {% elif maintenance.necessary_maintenance == 'VE' or maintenance.necessary_maintenance == 'VENCIDO'%}
+                    <span class="status-ve">Vencido</span>
+                    {% else %}
+                    <span class="status-ad" style="background:gray; color:white;">
+                        {{ maintenance.necessary_maintenance }}</span>
+                    {% endif %}
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>

@@ -1,0 +1,132 @@
+:root {
+    --primary-edit: #4f46e5;
+    /* Un índigo más distintivo para edición */
+    --slate-800: #1e293b;
+    --slate-500: #64748b;
+    --gray-100: #f1f5f9;
+    --white: #ffffff;
+}
+
+h1 {
+    text-align: center;
+    color: var(--slate-800);
+    margin: 40px 0 25px;
+    font-size: 2rem;
+    font-weight: 700;
+}
+
+.create-machinary-form {
+    max-width: 800px;
+    margin: 0 auto 60px;
+    background: var(--white);
+    padding: 40px;
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+    border: 1px solid #e2e8f0;
+}
+
+form {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    /* Dos columnas iguales */
+    gap: 25px 20px;
+    /* Espacio mayor vertical para que no se amontonen las etiquetas */
+}
+
+/* Forzar ancho uniforme en TODOS los elementos de formulario */
+form span,
+form .btn-submit,
+.success-message {
+    grid-column: span 2;
+}
+
+form span {
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    font-weight: 700;
+    color: var(--slate-500);
+    letter-spacing: 0.05em;
+    margin-bottom: -15px;
+    /* Controla la proximidad a la etiqueta */
+}
+
+/* LA CLAVE: Unificación de anchos */
+form input,
+form select,
+form textarea,
+form .django-select2 {
+    /* Por si usas select2 en el futuro */
+    width: 100% !important;
+    box-sizing: border-box !important;
+    /* Incluye padding en el ancho total */
+    padding: 12px 16px;
+    border: 1.5px solid #e2e8f0;
+    border-radius: 8px;
+    background-color: var(--gray-100);
+    font-size: 0.95rem;
+    color: var(--slate-800);
+    transition: all 0.2s ease;
+}
+
+form input:focus,
+form select:focus {
+    outline: none;
+    border-color: var(--primary-edit);
+    background-color: var(--white);
+    box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1);
+}
+
+/* Estilo para el input de archivo (Imagen) */
+form input[type="file"] {
+    padding: 8px;
+    background: #fff;
+    border: 1.5px dashed #cbd5e1;
+    cursor: pointer;
+}
+
+/* Botón Guardar Cambios */
+.btn-submit {
+    background-color: var(--primary-edit);
+    color: var(--white);
+    padding: 16px;
+    border: none;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-weight: 700;
+    cursor: pointer;
+    margin-top: 15px;
+    transition: filter 0.2s, transform 0.1s;
+}
+
+.btn-submit:hover {
+    filter: brightness(1.1);
+    transform: translateY(-1px);
+}
+
+/* Mensaje de éxito */
+.success-message {
+    background-color: #f0fdf4;
+    border: 1px solid #bbf7d0;
+    padding: 20px;
+    border-radius: 8px;
+    text-align: center;
+    margin-top: 25px;
+}
+
+.success-message p {
+    color: #166534;
+    margin: 0;
+    font-weight: 600;
+}
+
+/* Responsive */
+@media (max-width: 600px) {
+    form {
+        grid-template-columns: 1fr;
+    }
+
+    form span,
+    form .btn-submit {
+        grid-column: span 1;
+    }
+}

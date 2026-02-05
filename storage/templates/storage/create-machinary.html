@@ -1,0 +1,152 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block css_file %}
+<link rel="stylesheet" href="{% static 'storage/create-machinary.css' %}">
+{% endblock %}
+
+{% block title_page %}
+Crear Nueva Maquinaria
+{% endblock %}
+
+{% block content %}
+<h1>Registrar Nuevo Equipo</h1>
+<main class="create-machinary-form">
+    <form method="POST" action="{% url 'create-machinary' %}" enctype="multipart/form-data">
+        {% csrf_token %}
+
+        <span>Serial del equipo</span>
+        {{ form.serial }}
+
+        <span>Imagen del equipo</span>
+        <div class="image-field-wrapper">
+            {{ form.image }}
+        </div>
+
+        <span>Fecha de adquisición</span>
+        {{ form.acquisition_date }}
+
+        <span>Tipo de maquinaria</span>
+        <div class="input-with-add">
+            {{ form.name }}
+            <button type="button" class="btn-add-inline"
+                onclick="openModal('api-create-type', 'id_name', 'Tipo de Maquinaria')">+</button>
+        </div>
+
+        <span>Marca</span>
+        <div class="input-with-add">
+            {{ form.brand }}
+            <button type="button" class="btn-add-inline"
+                onclick="openModal('api-create-brand', 'id_brand', 'Marca')">+</button>
+        </div>
+
+        <span>Laboratorio / Ubicación</span>
+        <div class="input-with-add">
+            {{ form.lab_name }}
+            <button type="button" class="btn-add-inline"
+                onclick="openModal('api-create-lab', 'id_lab_name', 'Laboratorio')">+</button>
+        </div>
+
+        <span>Piso</span>
+        {{ form.floor }}
+
+        <span>Próximo mantenimiento (Opcional)</span>
+        {{ form.upcoming_maintenance }}
+
+        <button class="btn-submit" type="submit">Guardar Equipo</button>
+    </form>
+
+    {% if success %}
+    <div class="success-message">
+        <p>¡Equipo registrado exitosamente!</p>
+    </div>
+    {% endif %}
+</main>
+
+<!-- Generic Modal -->
+<div id="inlineCreateModal" class="modal-overlay">
+    <div class="modal-content">
+        <h3 id="modalTitle">Crear Nuevo</h3>
+        <input type="text" id="newItemName" placeholder="Nombre..." class="modal-input">
+        <div class="modal-actions">
+            <button type="button" onclick="closeModal()" class="btn-cancel">Cancelar</button>
+            <button type="button" onclick="submitInlineCreation()" class="btn-confirm">Guardar</button>
+        </div>
+    </div>
+</div>
+
+<script>
+    let currentApiUrl = '';
+    let currentSelectId = '';
+
+    function openModal(urlName, selectId, title) {
+        // Map url names to actual paths since we can't use 'url' tag in JS easily without pre-rendering or data attributes
+        const urls = {
+            'api-create-type': "{% url 'api-create-type' %}",
+            'api-create-brand': "{% url 'api-create-brand' %}",
+            'api-create-lab': "{% url 'api-create-lab' %}"
+        };
+
+        currentApiUrl = urls[urlName];
+        currentSelectId = selectId;
+
+        document.getElementById('modalTitle').innerText = 'Crear ' + title;
+        document.getElementById('newItemName').value = '';
+        document.getElementById('inlineCreateModal').style.display = 'flex';
+        document.getElementById('newItemName').focus();
+    }
+
+    function closeModal() {
+        document.getElementById('inlineCreateModal').style.display = 'none';
+        currentApiUrl = '';
+        currentSelectId = '';
+    }
+
+    function submitInlineCreation() {
+        const name = document.getElementById('newItemName').value;
+        if (!name) return;
+
+        fetch(currentApiUrl, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRFToken': '{{ csrf_token }}'
+            },
+            body: JSON.stringify({ name: name })
+        })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    // Add to select and select it
+                    const select = document.getElementById(currentSelectId);
+                    const option = new Option(data.name, data.id);
+                    select.add(option, undefined);
+                    select.value = data.id;
+                    closeModal();
+                } else {
+                    alert('Error: ' + data.error);
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('Ocurrió un error al crear el elemento');
+            });
+    }
+
+    // Close on click outside
+    window.onclick = function (event) {
+        const modal = document.getElementById('inlineCreateModal');
+        if (event.target == modal) {
+            closeModal();
+        }
+    }
+
+    // Enter key support
+    document.getElementById('newItemName').addEventListener("keypress", function (event) {
+        if (event.key === "Enter") {
+            event.preventDefault();
+            submitInlineCreation();
+        }
+    });
+</script>
+{% endblock %}

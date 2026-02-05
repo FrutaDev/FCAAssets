@@ -2,26 +2,29 @@
 {% load static %}
 
 {% block css_file %}
-    <link rel="stylesheet" href="{% static 'storage/create_maintenance.css' %}">
+<link rel="stylesheet" href="{% static 'storage/create_maintenance.css' %}">
 {% endblock %}
 
-{% block  title_page %}
-    Maquinaria Disponible
+{% block title_page %}
+Maquinaria Disponible
 {% endblock %}
 
 {% block content %}
-    <h1>Crear Mantenimiento</h1>
-    <main class="create-maintenance-form">
-        <form method="POST" action="{% url 'create-maintenance' %}" enctype="multipart/form-data">
-            {% csrf_token %}
-            {{ form.machinary_maintenance }}
-            {{ form.maintenance_date}}
-            {{ form.maintenance_provider }}
-            <span>inserta la imagen del mantenimiento</span>
-            {{ form.maintenance_image }}
-            <span>inserta el archivo del mantenimiento</span>
-            {{ form.maintenance_file }}
-            <button type="submit">Crear Mantenimiento</button>
-        </form>
-    </main>
+<h1>Crear Mantenimiento</h1>
+<main class="create-maintenance-form">
+    <form method="POST" action="{% url 'create-maintenance' %}" enctype="multipart/form-data">
+        {% csrf_token %}
+        <span>Serial del equipo</span>
+        {{ form.machinary_maintenance }}
+        <span>Fecha del mantenimiento</span>
+        {{ form.maintenance_date}}
+        <span>Proveedor del mantenimiento</span>
+        {{ form.maintenance_provider }}
+        <span>Inserta la imagen del mantenimiento</span>
+        {{ form.maintenance_image }}
+        <span>Inserta el archivo del mantenimiento</span>
+        {{ form.maintenance_file }}
+        <button class="btn-submit" type="submit">Crear Mantenimiento</button>
+    </form>
+</main>
 {% endblock %}
