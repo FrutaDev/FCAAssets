@@ -1,3 +1,4 @@
 settings.py
 code.zip
-uploads
+uploads/*
+!uploads/.gitkeep
