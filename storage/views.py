@@ -12,6 +12,8 @@ from django.contrib.auth.views import LoginView
 from django.http import JsonResponse, FileResponse, Http404
 import json
 from .models import Maintenance, Storage, Labs, Types, Brand
+from django.db.models import Q
+from django.core.paginator import Paginator
 
 class Index(LoginRequiredMixin, UserPassesTestMixin, View):
     login_url = '/accounts/login/'
@@ -21,8 +23,6 @@ class Index(LoginRequiredMixin, UserPassesTestMixin, View):
         return user.is_superuser or self.request.user.groups.filter(name='admins').exists()
 
     def get(self, request):
-        all_available_laboratories = Labs.objects.values_list('lab_name', 'id').distinct()
-        all_available_machinary_types = Types.objects.values_list('type_name', 'id').distinct()
         latest_maintenance_subquery = (Maintenance.objects.filter(machinary_maintenance=OuterRef('pk'), is_approved=True).order_by('-maintenance_date').values('maintenance_date')[:1])
         latest_maintenance_providers = (Maintenance.objects.filter(machinary_maintenance=OuterRef('pk'), is_approved=True).order_by('-maintenance_date').values('maintenance_provider__name_provider')[:1])
 
@@ -31,6 +31,19 @@ class Index(LoginRequiredMixin, UserPassesTestMixin, View):
             latest_maintenance_suppliers=Subquery(latest_maintenance_providers),
         )
 
+        if request.GET.get('q'):
+            query = request.GET.get('q')
+            storages = storages.filter(
+                Q(serial__icontains=query) | 
+                Q(name__type_name__icontains=query) | 
+                Q(brand__brand_name__icontains=query) | 
+                Q(lab_name__lab_name__icontains=query)
+            )
+
+        paginator = Paginator(storages, 10)
+        page_number = request.GET.get('page')
+        page_obj = paginator.get_page(page_number)
+
         up_to_date = Storage.objects.filter(necessary_maintenance='AD').count()
         expiring = Storage.objects.filter(necessary_maintenance='PV').count()
         expired = Storage.objects.filter(necessary_maintenance='VE').count()
@@ -38,12 +51,13 @@ class Index(LoginRequiredMixin, UserPassesTestMixin, View):
             print("storage", storage.necessary_maintenance)
 
         return render(request, "storage/index.html", {
-            "maintenances": storages,
+            "maintenances": page_obj,
+            "page_obj": page_obj,
             "up_to_date": up_to_date,
             "expiring": expiring,
             "expired": expired,
-            "available_laboratories": all_available_laboratories,
-            "available_machinary_types": all_available_machinary_types
+            "expiring": expiring,
+            "expired": expired,
         })
     
 class MachinaryDetail(LoginRequiredMixin, UserPassesTestMixin, View):
@@ -56,8 +70,14 @@ class MachinaryDetail(LoginRequiredMixin, UserPassesTestMixin, View):
     def get(self, request, serial):
         machinary_detail = Storage.objects.get(serial=serial)
         maintenances_done = Maintenance.objects.filter(machinary_maintenance__serial=serial).order_by('-maintenance_date')
+        
+        paginator = Paginator(maintenances_done, 10)
+        page_number = request.GET.get('page')
+        page_obj = paginator.get_page(page_number)
+
         return render(request, "storage/machinary_detail.html", {
-            "maintenances": maintenances_done,
+            "maintenances": page_obj,
+            "page_obj": page_obj,
             "machinary": machinary_detail,
         })
     
@@ -249,17 +269,37 @@ class Search(LoginRequiredMixin, UserPassesTestMixin, View):
         if machinary_type:
             machinary = Types.objects.get(id=machinary_type)
         if machinary_type:
-            results = Storage.objects.filter(lab_name=laboratory, brand=machinary_type)
+            results = Storage.objects.filter(lab_name=laboratory, name=machinary_type)
             # .values('serial', 'name__type_name', 'brand__brand_name', 'lab_name', 'image', 'upcoming_maintenance', 'necessary_maintenance')
         else:
             results = Storage.objects.filter(lab_name=laboratory)
             # .values('serial', 'name__type_name', 'brand__brand_name', 'lab_name', 'image', 'upcoming_maintenance', 'necessary_maintenance')
 
+        if request.GET.get('q'):
+            query = request.GET.get('q')
+            results = results.filter(
+                Q(serial__icontains=query) | 
+                Q(name__type_name__icontains=query) | 
+                Q(brand__brand_name__icontains=query)
+            )
+
         laboratory = Labs.objects.get(id=laboratory)
         print("results", results)
 
+        paginator = Paginator(results, 10)
+        page_number = request.GET.get('page')
+        page_obj = paginator.get_page(page_number)
+
+        up_to_date = results.filter(necessary_maintenance='AD').count()
+        expiring = results.filter(necessary_maintenance='PV').count()
+        expired = results.filter(necessary_maintenance='VE').count()
+
         return render(request, 'storage/search.html', {
-            'results': results,
+            'results': page_obj,
+            'page_obj': page_obj,
             'laboratory': laboratory,
-            'machinary_type': machinary
+            'machinary_type': machinary,
+            "up_to_date": up_to_date,
+            "expiring": expiring,
+            "expired": expired,
         })

@@ -53,7 +53,7 @@ th {
 }
 
 .add-machinary {
-    background: #ffffff;
+    background-color: #3b82f6;
     padding: 10px 20px;
     border-radius: 6px;
     display: flex;
@@ -63,7 +63,7 @@ th {
 }
 
 .add-machinary span {
-    color: #800000;
+    color: #ffffff;
     font-weight: 700;
 }
 

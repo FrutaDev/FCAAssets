@@ -1,0 +1,7 @@
+<div class="search-container">
+    <form method="GET" action="." class="search-form">
+        <input type="text" name="q" class="search-input" placeholder="Buscar por serial, nombre..."
+            value="{{ request.GET.q|default:'' }}">
+        <button type="submit" class="search-button">Buscar</button>
+    </form>
+</div>

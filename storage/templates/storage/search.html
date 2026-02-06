@@ -6,24 +6,47 @@
 <link rel="stylesheet" href="{% static 'storage/table-search.css' %}">
 {% endblock %}
 
+{% block script_file%}
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+{%endblock%}
+
 {% block title_page %}{{ laboratory }}{% endblock %}
 
 {% block content %}
 <div class="main-wrapper">
     <header class="table-header">
-        <h3>Edificio: <span>{{ laboratory|default:"General" }}</span>
-            {% if machinary_type %}
-            <small> - {{ machinary_type.type_name }}</small>
-            {% endif %}
-        </h3>
-
-        <a href="{% url 'create-machinary' %}" class="add-machinary-btn">
-            <div class="add-machinary">
-                <img src="{% static 'images/add.png' %}" alt="">
-                <span>Añadir Equipo</span>
+        <div style="display: flex; align-items: center; justify-content: space-between; width: 100%;">
+            <div>
+                <h3>Edificio: <span>{{ laboratory|default:"General" }}</span>
+                    {% if machinary_type %}
+                    <small> - {{ machinary_type.type_name }}</small>
+                    {% endif %}
+                </h3>
             </div>
-        </a>
+
+            <div style="display: flex; gap: 20px; align-items: center;">
+                <form method="GET" action="." style="display: flex; gap: 10px;">
+                    <input type="hidden" name="laboratorio" value="{{ request.GET.laboratorio }}">
+                    {% if request.GET.maquinaria %}
+                    <input type="hidden" name="maquinaria" value="{{ request.GET.maquinaria }}">
+                    {% endif %}
+                    <input type="text" name="q" placeholder="Buscar..." value="{{ request.GET.q|default:'' }}"
+                        style="padding: 8px; border: 1px solid #ddd; border-radius: 4px;">
+                    <button type="submit"
+                        style="padding: 8px 16px; background-color: #3b82f6; color: white; border: none; border-radius: 4px; cursor: pointer;">Buscar</button>
+                </form>
+
+                <a href="{% url 'create-machinary' %}" class="add-machinary-btn">
+                    <div class="add-machinary">
+                        <img src="{% static 'images/add.png' %}" alt="">
+                        <span>Añadir Equipo</span>
+                    </div>
+                </a>
+            </div>
+        </div>
     </header>
+
+    {% include '../storage/includes/chart.html' %}
 
     <div class="storage-grid">
         {% for storage in results %}
@@ -69,5 +92,7 @@
         <div class="no-results">No hay equipos registrados.</div>
         {% endfor %}
     </div>
+
+    {% include 'storage/includes/pagination.html' %}
 </div>
 {% endblock %}

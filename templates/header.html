@@ -16,21 +16,21 @@
     <div class="filter-laboratory">
         {% for lab in available_laboratories %}
         <div class="lab-item">
-            <a href="/search/?laboratorio={{ lab.1 }}" class="lab-name">{{ lab.0 }}</a>
+            <a href="{% url 'search' %}?laboratorio={{ lab.1 }}" class="lab-name">{{ lab.0 }}</a>
 
             <div class="lab-menu">
                 <h4>Maquinaria de {{ lab.0 }}:</h4>
                 <ul>
                     {% for maquina in available_machinary_types %}
                     <li>
-                        <a href="/search/?laboratorio={{ lab.1 }}&maquinaria={{ maquina.1}}">
+                        <a href="{% url 'search' %}?laboratorio={{ lab.1 }}&maquinaria={{ maquina.1}}">
                             {{ maquina.0 }}
                         </a>
                     </li>
                     {% endfor %}
                 </ul>
                 <h5 class="ver-todo">
-                    <a href="/search/?laboratorio={{ lab.1 }}">Ver todo el equipo</a>
+                    <a href="{% url 'search' %}?laboratorio={{ lab.1 }}">Ver todo el equipo</a>
                 </h5>
             </div>
         </div>

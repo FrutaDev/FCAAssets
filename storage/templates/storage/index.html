@@ -9,6 +9,7 @@
 {% block css_file %}
 <link rel="stylesheet" href="{% static 'storage/index.css' %}">
 <link rel="stylesheet" href="{% static 'storage/table.css' %}">
+<link rel="stylesheet" href="{% static 'storage/search-input.css' %}">
 {% endblock %}
 
 {% block title_page %}
@@ -17,5 +18,7 @@ Maquinaria Disponible
 
 {% block content %}
 {% include '../storage/includes/chart.html' %}
+{% include '../storage/includes/search-input.html' %}
 {% include '../storage/includes/table.html' %}
+{% include 'storage/includes/pagination.html' %}
 {% endblock %}
